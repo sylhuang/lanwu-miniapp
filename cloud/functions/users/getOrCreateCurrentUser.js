@@ -34,7 +34,7 @@ exports.main = async (event, context) => {
         wallet: [{
           card_id: Date.now(),
           card_type: 'guest',
-          activation_date: new Date().toISOString(),
+          activation_date: new Date(),
           expiration_date: null,
           balance: null,
         }]

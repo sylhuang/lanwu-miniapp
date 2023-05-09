@@ -1,6 +1,5 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk');
-const { CardTypes } = require('./cardTypes');
 
 // 初始化 cloud
 cloud.init({
@@ -13,43 +12,20 @@ const db = cloud.database();
 exports.main = async (event, context) => {
   const {
     id,
-    cardType,
+    cardId,
   } = event.data;
 
-  if (!id || !cardType) {
+  if (!id || !cardId) {
     return null;
   }
 
-  const newCard = {
-    card_id: Date.now(),
-    card_type: cardType,
-  };
-  const year = new Date().getFullYear();
-
-  switch (cardType) {
-    case CardTypes.Annual:
-      newCard.activation_date = new Date(year, 3, 20);
-      newCard.expiration_date = new Date(year + 1, 3, 19);
-      newCard.balance = null;
-      break;
-    case CardTypes.Seasonal:
-      newCard.activation_date = null;
-      newCard.expiration_date = null;
-      newCard.balance = null;
-      break;
-    case CardTypes.Times:
-      newCard.activation_date = new Date(year, 3, 20);
-      newCard.expiration_date = new Date(year + 1, 3, 19);
-      newCard.balance = 10;
-      break;
-    default:
-      return null;
-  }
-
+  const _ = db.command;
   const { stats } = await db.collection('Users').doc(id)
     .update({
       data: {
-        wallet: db.command.push(newCard),
+        wallet: _.pull({
+          card_id: cardId,
+        }),
       },
     });
 
