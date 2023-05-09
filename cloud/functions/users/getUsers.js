@@ -17,5 +17,17 @@ exports.main = async (event, context) => {
   return await db.collection('Users')
     .where(filter)
     .get()
-    .then(res => res.data);
+    .then(res => res.data.map(user => ({
+      id: user._id,
+      name: user.name,
+      roles: user.roles,
+      balance: user.balance,
+      wallet: user.wallet.map(card => ({
+        id: card.card_id,
+        type: card.card_type,
+        activation: card.activation_date,
+        expiration: card.expiration_date,
+        balance: card.balance,
+      })),
+    })));
 }

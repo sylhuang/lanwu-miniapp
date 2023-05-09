@@ -15,39 +15,48 @@ exports.main = async (event, context) => {
   } = cloud.getWXContext();
 
   // Get the user if exists
-  const [user] = await db.collection('Users').where({
+  let [user] = await db.collection('Users').where({
     _openid: OPENID
   })
-  .get()
-  .then(res => res.data);
+    .get()
+    .then(res => res.data);
 
-  if (user) {
-    return user;
+  if (!user) {
+    const { total } = await db.collection('Users').count();
+    const id = total.toString().padStart(6, '0');
+    await db.collection('Users').add({
+      data: {
+        _id: id,
+        _openid: OPENID,
+        name: `meeple${id}`,
+        roles: ['user'],
+        balance: 0,
+        wallet: [{
+          card_id: Date.now(),
+          card_type: 'guest',
+          activation_date: new Date().toISOString(),
+          expiration_date: null,
+          balance: null,
+        }]
+      }
+    });
+
+    user = await db.collection('Users').doc(id)
+      .get()
+      .then(res => res.data);
   }
 
-  // Create the user if not found
-  const {
-    total
-  } = await db.collection('Users').count();
-  const newUser = {
-    _id: total.toString().padStart(6, '0'),
-    _openid: OPENID,
-    name: '',
-    role: 'user',
-    balance: 0,
-    wallet: [{
-      card_id: Date.now(),
-      card_type: 'guest',
-      active: true,
-      activation_date: Date.now(),
-      expiration_date: null,
-      balance: null,
-    }]
-  };
-
-  return await db.collection('Users')
-    .add({
-      data: newUser
-    })
-    .then(() => newUser);
+  return user ? ({
+    id: user._id,
+    name: user.name,
+    roles: user.roles,
+    balance: user.balance,
+    wallet: user.wallet.map(card => ({
+      id: card.card_id,
+      type: card.card_type,
+      activation: card.activation_date,
+      expiration: card.expiration_date,
+      balance: card.balance,
+    }))
+  }) : null;
 }
