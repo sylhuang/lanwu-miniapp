@@ -1,6 +1,8 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk');
-const { CardTypes } = require('./cardTypes');
+const {
+  CardTypes
+} = require('./cardTypes');
 
 // 初始化 cloud
 cloud.init({
@@ -20,26 +22,30 @@ exports.main = async (event, context) => {
     return null;
   }
 
-  const [card, cardIndex] = await db.collection('Users').doc(id).field({ wallet: true }).get().then(res => {
-    const card = res.data?.wallet.find(c => c.card_id === cardId);
-    const cardIndex = res.data?.wallet.findIndex(c => c.card_id === cardId);
+  const [card, cardIndex] = await db.collection('Users').doc(id).field({
+    wallet: true
+  }).get().then(res => {
+    const card = res.data.wallet.find(c => c.card_id === cardId);
+    const cardIndex = res.data.wallet.findIndex(c => c.card_id === cardId);
 
     return [card, cardIndex];
   });
 
-  if (card?.card_type === CardTypes.Seasonal) {
+  if (card && card.card_type === CardTypes.Seasonal) {
     const year = new Date().getFullYear();
     const month = new Date().getMonth();
     const activation = new Date(year, month, 1);
     const expiration = new Date(year, month + 3, 0);
-    
-    const { stats } = await db.collection('Users').doc(id)
-    .update({
-      data: {
-        [`wallet.${cardIndex}.activation_date`]: activation,
-        [`wallet.${cardIndex}.expiration_date`]: expiration,
-      },
-    });
+
+    const {
+      stats
+    } = await db.collection('Users').doc(id)
+      .update({
+        data: {
+          [`wallet.${cardIndex}.activation_date`]: activation,
+          [`wallet.${cardIndex}.expiration_date`]: expiration,
+        },
+      });
 
     if (stats.updated) {
       return await db.collection('Users').doc(id).field({
