@@ -4,6 +4,7 @@ const updateUserInfo = require('./updateUserInfo');
 const addCardByType = require('./wallet/addCardByType');
 const removeCardById = require('./wallet/removeCardById');
 const activateCardById = require('./wallet/activateCardById');
+const getValidCards = require('./wallet/getValidCards');
 
 // 云函数入口函数
 exports.main = async (event, context) => {
@@ -22,6 +23,8 @@ exports.main = async (event, context) => {
       return await removeCardById.main(event, context);
     case 'activateCardById':
       return await activateCardById.main(event, context);
+    case 'getValidCards':
+      return await getValidCards.main(event, context);
     default:
       return null;
   }

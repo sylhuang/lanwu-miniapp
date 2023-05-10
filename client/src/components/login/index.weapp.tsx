@@ -15,11 +15,16 @@ export default class Index extends Component<PropsWithChildren> {
 
   componentDidHide() { }
 
-  getLogin = () => {
+  test = () => {
     Taro.cloud
       .callFunction({
-        name: "login",
-        data: {}
+        name: "users",
+        data: {
+          action: "getValidCards",
+          data: {
+            id: "000000"
+          }
+        }
       })
       .then(res => {
         this.setState({
@@ -61,7 +66,7 @@ export default class Index extends Component<PropsWithChildren> {
   render() {
     return (
       <View className='index'>
-        <Button onClick={this.getLogin}>获取登录云函数</Button>
+        <Button onClick={this.test}>测试接口</Button>
         <Text>context：{JSON.stringify(this.state.context)}</Text>
         <Button onClick={this.getOrCreateUser}>一键登录</Button>
         <Button onClick={this.getCheckInStatus}>获取签到状态</Button>
