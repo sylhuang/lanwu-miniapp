@@ -29,6 +29,7 @@ exports.main = async (event, context) => {
         _id: id,
         _openid: OPENID,
         name: `meeple${id}`,
+        alias: null,
         roles: ['user'],
         balance: 0,
         wallet: [{
@@ -49,6 +50,7 @@ exports.main = async (event, context) => {
   return user ? ({
     id: user._id,
     name: user.name,
+    alias: user.alias,
     roles: user.roles,
     balance: user.balance,
     wallet: user.wallet.map(card => ({

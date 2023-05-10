@@ -20,6 +20,7 @@ exports.main = async (event, context) => {
     .then(res => res.data.map(user => ({
       id: user._id,
       name: user.name,
+      alias: user.alias,
       roles: user.roles,
       balance: user.balance,
       wallet: user.wallet.map(card => ({

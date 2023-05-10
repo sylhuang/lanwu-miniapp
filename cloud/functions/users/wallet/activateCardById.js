@@ -35,7 +35,7 @@ exports.main = async (event, context) => {
     const year = new Date().getFullYear();
     const month = new Date().getMonth();
     const activation = new Date(year, month, 1);
-    const expiration = new Date(year, month + 3, 0);
+    const expiration = new Date(year, month + 3, 0, 23, 59, 59);
 
     const {
       stats
