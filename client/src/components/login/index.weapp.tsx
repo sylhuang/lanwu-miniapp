@@ -20,6 +20,10 @@ export default class Index extends Component<PropsWithChildren> {
       .callFunction({
         name: "holiday",
         data: {
+          action: "checkHolidayByDate",
+          data: {
+            date: new Date(2023, 4, 7)
+          }
         }
       })
       .then(res => {
@@ -67,7 +71,7 @@ export default class Index extends Component<PropsWithChildren> {
           action: "checkin",
           data: {
             id: "000000",
-            cardId: "1683724493868",
+            cardId: 1683994065981,
           }
         }
       })

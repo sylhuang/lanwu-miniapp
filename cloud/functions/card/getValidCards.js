@@ -38,5 +38,11 @@ exports.main = async (event, context) => {
     })
     .end();
 
-  return list;
+  return list.map(card => ({
+    id: card.card_id,
+    type: card.card_type,
+    activation: card.activation_date,
+    expiration: card.expiration_date,
+    balance: card.balance,
+  }));
 }

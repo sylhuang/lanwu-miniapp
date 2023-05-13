@@ -26,7 +26,7 @@ exports.main = async (event, context) => {
     return null;
   }
 
-  const validCards = await cloud.callFunction({
+  const { result: validCards } = await cloud.callFunction({
     name: 'card',
     data: {
       action: 'getValidCards',
@@ -36,29 +36,26 @@ exports.main = async (event, context) => {
     }
   });
 
-  if (!id || !cardId || !status || status.isCheckedIn) {
+  if (!validCards.find(validCard => validCard.id === cardId)) {
     return null;
   }
-
-  const card = await db.collection('Users')
-    .aggregate()
-    .match({
-      _id: id
-    })
-    .unwind('$wallet')
-    .replaceRoot({
-      newRoot: '$wallet'
-    })
-    .match({
-      card_id: cardId
-    })
-    .end();
 
   const { _id } = await db.collection('Visits').add({
     data: {
       user_id: id,
       card_id: cardId,
       date: new Date(),
+    }
+  });
+
+  await cloud.callFunction({
+    name: 'card',
+    data: {
+      action: 'chargeCardById',
+      data: {
+        id,
+        cardId,
+      }
     }
   });
 

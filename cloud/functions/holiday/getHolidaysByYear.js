@@ -21,8 +21,8 @@ exports.main = async (event, context) => {
     }
 
     const { days } = res.data[0];
-    const holidays = days.filter(d => d.isOffDay).map(d => new Date(d.date));
-    const workdays = days.filter(d => !d.isOffDay).map(d => new Date(d.date));
+    const holidays = days.filter(d => d.isOffDay).map(d => d.date);
+    const workdays = days.filter(d => !d.isOffDay).map(d => d.date);
 
     return ({
       holidays,

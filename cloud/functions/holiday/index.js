@@ -1,6 +1,7 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk');
 const getHolidaysByYear = require('./getHolidaysByYear');
+const checkHolidayByDate = require('./checkHolidayByDate');
 const updateHolidaysByYear = require('./updateHolidaysByYear');
 
 // 初始化 cloud
@@ -16,6 +17,8 @@ exports.main = async (event, context) => {
   switch (action) {
     case 'getHolidaysByYear':
       return await getHolidaysByYear.main(event, context);
+    case 'checkHolidayByDate':
+      return await checkHolidayByDate.main(event, context);
     default:
       return updateHolidaysByYear.main(event, context);
   }

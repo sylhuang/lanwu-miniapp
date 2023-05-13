@@ -31,7 +31,7 @@ exports.main = async (event, context) => {
     return [card, cardIndex];
   });
 
-  if (card && card.card_type === CardTypes.Seasonal) {
+  if (card && card.activation_date && card.card_type === CardTypes.Seasonal) {
     const year = new Date().getFullYear();
     const month = new Date().getMonth();
     const activation = new Date(year, month, 1);
@@ -49,17 +49,18 @@ exports.main = async (event, context) => {
 
     if (stats.updated) {
       return await db.collection('Users').doc(id).field({
-        wallet: true,
-      }).get().then(res => ({
-        id,
-        wallet: res.data.wallet.map(card => ({
-          id: card.card_id,
-          type: card.card_type,
-          activation: card.activation_date,
-          expiration: card.expiration_date,
-          balance: card.balance,
-        })),
-      }));
+        wallet: true
+      }).get().then(res => {
+        const activatedCard = res.data.wallet.find(c => c.card_id === cardId);
+
+        return ({
+          id: activatedCard.card_id,
+          type: activatedCard.card_type,
+          activation: activatedCard.activation_date,
+          expiration: activatedCard.expiration_date,
+          balance: activatedCard.balance,
+        });
+      });
     }
   }
 
