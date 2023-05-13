@@ -11,11 +11,11 @@ const db = cloud.database();
 
 exports.main = async (event, context) => {
   const {
-    filter = {}
-  } = event;
+    id
+  } = event.data;
 
   return await db.collection('Users')
-    .where(filter)
+    .doc(id)
     .get()
     .then(res => res.data.map(user => ({
       id: user._id,

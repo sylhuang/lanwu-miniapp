@@ -1,4 +1,5 @@
-const getCheckInStatus = require('./getCheckInStatus')
+const getCheckInStatus = require('./getCheckInStatus');
+const checkin = require('./checkin');
 
 // 云函数入口函数
 exports.main = async (event, context) => {
@@ -7,8 +8,8 @@ exports.main = async (event, context) => {
   switch (action) {
     case 'getCheckInStatus':
       return await getCheckInStatus.main(event, context);
-    // case 'getUsers':
-    //   return await getUsers.main(event, context);
+    case 'checkin':
+      return await checkin.main(event, context);
     // case 'updateUserInfo':
     //   return await updateUserInfo.main(event, context);
     // case 'addCardByType':

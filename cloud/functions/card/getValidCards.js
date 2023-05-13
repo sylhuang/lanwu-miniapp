@@ -19,7 +19,9 @@ exports.main = async (event, context) => {
   }
 
   const _ = db.command;
-  const { list } = await db.collection('Users')
+  const {
+    list
+  } = await db.collection('Users')
     .aggregate()
     .match({
       _id: id
@@ -29,9 +31,12 @@ exports.main = async (event, context) => {
       newRoot: '$wallet'
     })
     .match({
-      expiration_date: _.eq(null).or(_.gt(new Date()))
+      expiration_date: _.eq(null).or(_.gt(new Date())),
+    })
+    .match({
+      balance: _.eq(null).or(_.gt(0))
     })
     .end();
 
-    return list;
+  return list;
 }

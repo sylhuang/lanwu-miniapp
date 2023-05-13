@@ -18,12 +18,8 @@ export default class Index extends Component<PropsWithChildren> {
   test = () => {
     Taro.cloud
       .callFunction({
-        name: "users",
+        name: "holiday",
         data: {
-          action: "getValidCards",
-          data: {
-            id: "000000"
-          }
         }
       })
       .then(res => {
@@ -33,13 +29,10 @@ export default class Index extends Component<PropsWithChildren> {
       })
   }
 
-  getOrCreateUser = () => {
+  login = () => {
     Taro.cloud
       .callFunction({
-        name: "users",
-        data: {
-          action: "getOrCreateCurrentUser"
-        }
+        name: "login",
       })
       .then(res => {
         this.setState({
@@ -53,7 +46,29 @@ export default class Index extends Component<PropsWithChildren> {
       .callFunction({
         name: "checkin",
         data: {
-          action: "getCheckInStatus"
+          action: "getCheckInStatus",
+          data: {
+            id: "000000"
+          }
+        }
+      })
+      .then(res => {
+        this.setState({
+          context: res.result
+        })
+      })
+  }
+
+  checkin = () => {
+    Taro.cloud
+      .callFunction({
+        name: "checkin",
+        data: {
+          action: "checkin",
+          data: {
+            id: "000000",
+            cardId: "1683724493868",
+          }
         }
       })
       .then(res => {
@@ -68,8 +83,9 @@ export default class Index extends Component<PropsWithChildren> {
       <View className='index'>
         <Button onClick={this.test}>测试接口</Button>
         <Text>context：{JSON.stringify(this.state.context)}</Text>
-        <Button onClick={this.getOrCreateUser}>一键登录</Button>
+        <Button onClick={this.login}>一键登录</Button>
         <Button onClick={this.getCheckInStatus}>获取签到状态</Button>
+        <Button onClick={this.checkin}>打卡</Button>
       </View>
     )
   }

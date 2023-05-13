@@ -11,23 +11,17 @@ const db = cloud.database();
 
 exports.main = async (event, context) => {
   const {
-    OPENID
-  } = cloud.getWXContext();
+    id
+  } = event.data;
 
-  // Get the user if exists
-  let [user] = await db.collection('Users').where({
-    _openid: OPENID
-  })
-    .get()
-    .then(res => res.data);
-
-  if (!user) {
+  if (!id) {
     return null;
   }
 
-  const today = new Date().setHours(0, 0, 0);
+  const today = new Date()
+  today.setHours(0, 0, 0);
   const visit = await db.collection('Visits').where({
-    user_id: user._id,
+    user_id: id,
     date: db.command.gte(today)
   }).get().then(res => res.data.length ? res.data[0] : null);
 
