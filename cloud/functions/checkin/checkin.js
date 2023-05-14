@@ -59,5 +59,10 @@ exports.main = async (event, context) => {
     }
   });
 
-  return await db.collection('Visits').doc(_id).get().then(res => res.data);
+  return await db.collection('Visits').doc(_id).get().then(res => ({
+    id: _id,
+    cardId: res.data.card_id,
+    userId: res.data.user_id,
+    date: res.data.date
+  }));
 }

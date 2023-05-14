@@ -33,7 +33,7 @@ exports.main = async (event, context) => {
         roles: ['user'],
         balance: 0,
         wallet: [{
-          card_id: Date.now(),
+          card_id: Date.now().toString(),
           card_type: 'guest',
           activation_date: new Date(),
           expiration_date: null,

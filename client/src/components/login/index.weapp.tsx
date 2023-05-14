@@ -1,9 +1,11 @@
 import { Component, PropsWithChildren } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Text, Button } from '@tarojs/components'
+import { View, Text, Button, Input, Textarea } from '@tarojs/components'
 
 export default class Index extends Component<PropsWithChildren> {
   state = {
+    apiName: "",
+    apiParam: "",
     context: {}
   }
 
@@ -18,13 +20,8 @@ export default class Index extends Component<PropsWithChildren> {
   test = () => {
     Taro.cloud
       .callFunction({
-        name: "holiday",
-        data: {
-          action: "checkHolidayByDate",
-          data: {
-            date: new Date(2023, 4, 7)
-          }
-        }
+        name: this.state.apiName,
+        data: JSON.parse(this.state.apiParam)
       })
       .then(res => {
         this.setState({
@@ -71,7 +68,7 @@ export default class Index extends Component<PropsWithChildren> {
           action: "checkin",
           data: {
             id: "000000",
-            cardId: 1683994065981,
+            cardId: "1684040707854",
           }
         }
       })
@@ -85,6 +82,8 @@ export default class Index extends Component<PropsWithChildren> {
   render() {
     return (
       <View className='index'>
+        <Input type='text' placeholder='接口名, 如：checkin' value={this.state.apiName} onInput={e => this.setState({ apiName: e.detail.value })}></Input>
+        <Textarea placeholder='接口参数, 如：{ "action": "getCheckInStatus", "data": { "id": "000000" } }' value={this.state.apiParam} onInput={e => this.setState({ apiParam: e.detail.value })}></Textarea >
         <Button onClick={this.test}>测试接口</Button>
         <Text>context：{JSON.stringify(this.state.context)}</Text>
         <Button onClick={this.login}>一键登录</Button>
