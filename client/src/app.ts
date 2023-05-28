@@ -9,6 +9,11 @@ class App extends Component<PropsWithChildren> {
     if (process.env.TARO_ENV === 'weapp') {
       Taro.cloud.init()
     }
+    Taro.loadFontFace({
+      global: true,
+      family: 'Alibaba Puhui',
+      source: 'url(https://puhuiti.oss-cn-hangzhou.aliyuncs.com/AlibabaPuHuiTi/Alibaba-PuHuiTi-Regular/Alibaba-PuHuiTi-Regular.otf)'
+    })
   }
 
   componentDidShow () {}

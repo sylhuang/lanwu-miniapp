@@ -1,6 +1,7 @@
 export default {
   pages: [
-    'pages/index/index'
+    'pages/index/index',
+    'pages/myPage/index'
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -8,5 +9,20 @@ export default {
     navigationBarTitleText: 'WeChat',
     navigationBarTextStyle: 'black'
   },
-  cloud: true
+  tabBar: {
+    color: '#666',
+    selectedColor: '#1684FC',
+    backgroundColor: '#fff',
+    list: [
+      {
+        pagePath: 'pages/index/index',
+        text: '卡包'
+      },
+      {
+        pagePath: 'pages/myPage/index',
+        text: '我的'
+      }
+    ]
+  },
+  cloud: true,
 }
