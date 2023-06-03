@@ -14,21 +14,28 @@ exports.main = async (event, context) => {
     id
   } = event.data;
 
+  const { total } = await db.collection('Visits')
+  .where({
+    user_id: id,
+  })
+  .count();
+
   return await db.collection('Users')
     .doc(id)
     .get()
-    .then(res => res.data.map(user => ({
-      id: user._id,
-      name: user.name,
-      alias: user.alias,
-      roles: user.roles,
-      balance: user.balance,
-      wallet: user.wallet.map(card => ({
+    .then(res => ({
+      id: res.data._id,
+      name: res.data.name,
+      alias: res.data.alias,
+      roles: res.data.roles,
+      balance: res.data.balance,
+      visits: total,
+      wallet: res.data.wallet.map(card => ({
         id: card.card_id,
         type: card.card_type,
         activation: card.activation_date,
         expiration: card.expiration_date,
         balance: card.balance,
       })),
-    })));
+    }));
 }
