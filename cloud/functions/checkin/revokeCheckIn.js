@@ -47,5 +47,11 @@ exports.main = async (event, context) => {
     }
   });
 
-  return await db.collection('Visits').doc(visit._id).remove();
+  const {
+    stats
+  } = await db.collection('Visits').doc(visit._id).remove();
+
+  return ({
+    revoked: Boolean(stats.removed),
+  })
 }
