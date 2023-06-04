@@ -12,6 +12,7 @@ const db = cloud.database();
 exports.main = async (event, context) => {
   const {
     id,
+    date,
   } = event.data;
 
   if (!id) {
@@ -31,7 +32,7 @@ exports.main = async (event, context) => {
       newRoot: '$wallet'
     })
     .match({
-      expiration_date: _.eq(null).or(_.gt(new Date())),
+      expiration_date: _.eq(null).or(_.gt(date ? new Date(date) : new Date())),
     })
     .match({
       balance: _.eq(null).or(_.gt(0))
