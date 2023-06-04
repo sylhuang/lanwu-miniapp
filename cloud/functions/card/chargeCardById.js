@@ -15,6 +15,8 @@ exports.main = async (event, context) => {
   const {
     id,
     cardId,
+    date,
+    revoke,
   } = event.data;
 
   if (!id || !cardId) {
@@ -38,9 +40,9 @@ exports.main = async (event, context) => {
     await activateCardById.main(event, context);
   }
 
-  const today = new Date();
+  const chargeDate = date ? new Date(date) : new Date();
 
-  if (card.expiration_date && card.expiration_date < today) {
+  if (card.expiration_date && card.expiration_date < chargeDate) {
     return null;
   }
 
@@ -49,7 +51,7 @@ exports.main = async (event, context) => {
     data: {
       action: 'checkHolidayByDate',
       data: {
-        date: today,
+        date: chargeDate,
       }
     }
   });
@@ -61,11 +63,11 @@ exports.main = async (event, context) => {
     case CardTypes.Seasonal:
       break;
     case CardTypes.Times:
-      if (card.balance <= 0) {
+      if (card.balance <= 0 && !revoke) {
         return;
       }
 
-      const cardBalanceAdjustment = isOffDay ? -0.5 : -1;
+      const cardBalanceAdjustment = (revoke ? -1 : 1) * (isOffDay ? -1 : -0.5);
       await db.collection('Users').doc(id)
         .update({
           data: {
@@ -74,7 +76,7 @@ exports.main = async (event, context) => {
         });
       break;
     case CardTypes.Guest:
-      const userBalanceAdjustment = isOffDay ? -38 : -19;
+      const userBalanceAdjustment = (revoke ? -1 : 1) * (isOffDay ? -38 : -19);
       await db.collection('Users').doc(id)
         .update({
           data: {

@@ -21,7 +21,7 @@ exports.main = async (event, context) => {
   }
 
   const newCard = {
-    card_id: Date.now(),
+    card_id: Date.now().toString(),
     card_type: cardType,
   };
   const year = new Date().getFullYear();

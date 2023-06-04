@@ -30,9 +30,28 @@ exports.main = async (event, context) => {
     date: _.and(_.gte(checkDate), _.lt(endDate)),
   }).get().then(res => res.data.length ? res.data[0] : null);
 
-  return ({
-    isCheckedIn: !!visit,
-    cardId: visit ? visit.card_id : null,
-    date: checkDate.toISOString(),
+  if (!visit) {
+    return null;
+  }
+
+  await cloud.callFunction({
+    name: 'card',
+    data: {
+      action: 'chargeCardById',
+      data: {
+        id,
+        cardId: visit.card_id,
+        date,
+        revoke: true,
+      }
+    }
   });
+
+  const {
+    stats
+  } = await db.collection('Visits').doc(visit._id).remove();
+
+  return ({
+    revoked: Boolean(stats.removed),
+  })
 }

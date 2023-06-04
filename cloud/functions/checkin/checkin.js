@@ -13,7 +13,8 @@ const db = cloud.database();
 exports.main = async (event, context) => {
   const {
     id,
-    cardId
+    cardId,
+    date,
   } = event.data;
 
   if (!id || !cardId) {
@@ -44,7 +45,7 @@ exports.main = async (event, context) => {
     data: {
       user_id: id,
       card_id: cardId,
-      date: new Date(),
+      date: date ? new Date(date) : new Date(),
     }
   });
 
@@ -55,6 +56,7 @@ exports.main = async (event, context) => {
       data: {
         id,
         cardId,
+        date,
       }
     }
   });
