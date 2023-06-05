@@ -1,5 +1,5 @@
 import { Component, PropsWithChildren } from 'react'
-import Taro, { Config } from '@tarojs/taro'
+import Taro, { Config, useDidShow } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import './index.less'
 import profileImage from '../../images/profileImage.png';
@@ -11,7 +11,7 @@ function MyPage({ dispatch }) {
   const [balance, setBalance] = useState(0);
   const [visits, setVisits] = useState(0);
 
-  useEffect(() => {
+  useDidShow(() => {
     Taro.getStorage({
       key: 'id',
       fail: function () {
@@ -22,7 +22,7 @@ function MyPage({ dispatch }) {
         getUserInfo(res.data);
       },
     })
-  },[]);
+  })
 
   const login = () => {
     Taro.cloud

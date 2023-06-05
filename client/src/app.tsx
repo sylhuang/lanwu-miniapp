@@ -25,6 +25,7 @@ class App extends Component {
   // this.props.children 是将要会渲染的页面
 
   //TODO: 新增dva，嵌套Provider时报错React.Children.only expected to receive a single React element child. 待排查
+  //TODO: User信息放入全局model
   render() {
     return this.props.children
   }
