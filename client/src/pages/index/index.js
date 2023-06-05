@@ -33,15 +33,7 @@ function Index({ dispatch }) {
   }, [])
 
   useEffect(() => {
-    Taro.getStorage({
-      key: 'checkInStatus',
-      fail: function () {
-        getCheckInStatus();
-      },
-      success: function (res) {
-        setCheckInStatus(res.data);
-      },
-    })
+    getCheckInStatus();
   })
 
   const login = () => {
@@ -99,10 +91,7 @@ function Index({ dispatch }) {
       .then(res => {
         if (res.result !== null) {
           const { isCheckedIn } = res.result;
-          Taro.setStorage({
-            key: "checkInStatus",
-            data: isCheckedIn
-          });
+          setCheckInStatus(checkInStatus);
         }
       })
   }
@@ -123,10 +112,6 @@ function Index({ dispatch }) {
         console.log(res);
         if (res.result !== null) {
           getUserInfo(id);
-          Taro.setStorage({
-            key: "checkInStatus",
-            data: true,
-          });
           setCheckInStatus(true);
           Taro.showToast({
             title: '打卡成功',
