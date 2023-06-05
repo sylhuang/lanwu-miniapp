@@ -1,11 +1,14 @@
-import { Component, PropsWithChildren } from 'react'
-import Taro, { Config } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
+import { Provider } from 'react-redux'
 
 import './app.less'
+import store from './store';
 
-class App extends Component<PropsWithChildren> {
+class App extends Component {
 
-  componentDidMount () {
+  componentDidMount() {
+    console.log(this.props)
     if (process.env.TARO_ENV === 'weapp') {
       Taro.cloud.init()
     }
@@ -16,12 +19,13 @@ class App extends Component<PropsWithChildren> {
     })
   }
 
-  componentDidShow () {}
+  componentDidShow() { }
 
-  componentDidHide () {}
-
+  componentDidHide() { }
   // this.props.children 是将要会渲染的页面
-  render () {
+
+  //TODO: 新增dva，嵌套Provider时报错React.Children.only expected to receive a single React element child. 待排查
+  render() {
     return this.props.children
   }
 }
