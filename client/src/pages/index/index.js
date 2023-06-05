@@ -17,6 +17,7 @@ function Index({ dispatch }) {
   const [wallet, setWallet] = useState([]);
   const [id, setId] = useState(null);
   const [currentCard, setCurrentCard] = useState(0);
+  const [checkInStatus, setCheckInStatus] = useState(false);
 
   useEffect(() => {
     Taro.getStorage({
@@ -30,6 +31,18 @@ function Index({ dispatch }) {
       },
     })
   }, [])
+
+  useEffect(() => {
+    Taro.getStorage({
+      key: 'checkInStatus',
+      fail: function () {
+        getCheckInStatus();
+      },
+      success: function (res) {
+        setCheckInStatus(res.data);
+      },
+    })
+  })
 
   const login = () => {
     Taro.cloud
@@ -72,6 +85,28 @@ function Index({ dispatch }) {
       })
   }
 
+  const getCheckInStatus = () => {
+    Taro.cloud
+      .callFunction({
+        name: "checkin",
+        data: {
+          action: "getCheckInStatus",
+          data: {
+            id: id
+          }
+        }
+      })
+      .then(res => {
+        if (res.result !== null) {
+          const { isCheckedIn } = res.result;
+          Taro.setStorage({
+            key: "checkInStatus",
+            data: isCheckedIn
+          });
+        }
+      })
+  }
+
   const checkIn = () => {
     Taro.cloud
       .callFunction({
@@ -88,6 +123,11 @@ function Index({ dispatch }) {
         console.log(res);
         if (res.result !== null) {
           getUserInfo(id);
+          Taro.setStorage({
+            key: "checkInStatus",
+            data: true,
+          });
+          setCheckInStatus(true);
           Taro.showToast({
             title: '打卡成功',
             icon: 'success',
@@ -151,9 +191,17 @@ function Index({ dispatch }) {
         })}
       </Swiper>
 
-      <View className='checkIn' onClick={checkIn}>
-        打卡
-      </View>
+      {
+        checkInStatus ? (
+          <View className='checkIn checked' disabled>
+            已打卡
+          </View>
+        ) : (
+          <View className='checkIn unchecked' onClick={checkIn}>
+            打卡
+          </View>
+        )
+      }
     </View>
   )
 }
