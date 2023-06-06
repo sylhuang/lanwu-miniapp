@@ -32,9 +32,9 @@ function Index({ dispatch }) {
     })
   }, [])
 
-  useEffect(() => {
-    getCheckInStatus();
-  })
+  // useEffect(() => {
+  //   getCheckInStatus();
+  // })
 
   const login = () => {
     Taro.cloud
