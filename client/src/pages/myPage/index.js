@@ -30,33 +30,24 @@ function MyPage({ dispatch }) {
         name: "login",
       })
       .then(res => {
-        console.log(res);
         if (res.result !== null) {
-          const { id, name, balance, visits } = res.result;
+          const { id } = res.result;
           Taro.setStorage({
             key: "id",
             data: res.result.id
           });
-          Taro.setStorage({
-            key: "name",
-            data: res.result.name
-          });
-          setId(id);
-          setName(name);
-          setBalance(balance);
-          setVisits(visits);
         }
       })
   }
 
-  const getUserInfo = (id) => {
+  const getUserInfo = (userId) => {
     Taro.cloud
       .callFunction({
         name: "user",
         data: {
           action: "getUserById",
           data: {
-            id: id
+            id: userId
           }
         }
       })

@@ -48,7 +48,7 @@ exports.main = async (event, context) => {
     balance: card.balance,
   })).sort((a, b) => {
     const getOrder = (c) => {
-      switch (c.card_type) {
+      switch (c.type) {
         case CardTypes.Annual:
           return 0;
         case CardTypes.Seasonal:

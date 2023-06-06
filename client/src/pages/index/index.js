@@ -13,11 +13,11 @@ const cardType = {
 }
 
 function Index({ dispatch }) {
-
   const [wallet, setWallet] = useState([]);
   const [id, setId] = useState(null);
   const [currentCard, setCurrentCard] = useState(0);
   const [checkInStatus, setCheckInStatus] = useState(false);
+  const [isCheckingIn, setIsCheckingIn] = useState(false);
 
   useEffect(() => {
     Taro.getStorage({
@@ -27,14 +27,11 @@ function Index({ dispatch }) {
       },
       success: function (res) {
         setId(res.data);
-        getUserInfo(res.data);
+        getValidCards(res.data);
+        getCheckInStatus(res.data);
       },
     })
   }, [])
-
-  // useEffect(() => {
-  //   getCheckInStatus();
-  // })
 
   const login = () => {
     Taro.cloud
@@ -42,61 +39,59 @@ function Index({ dispatch }) {
         name: "login",
       })
       .then(res => {
-        console.log(res);
         if (res.result !== null) {
-          const { id, name, wallet } = res.result;
+          const { id } = res.result;
           Taro.setStorage({
             key: "id",
             data: res.result.id
           });
-          Taro.setStorage({
-            key: "name",
-            data: res.result.name
-          });
-          setWallet(wallet);
         }
       })
   }
 
-  const getUserInfo = (id) => {
+  const getValidCards = (userId) => {
     Taro.cloud
       .callFunction({
-        name: "user",
+        name: "card",
         data: {
-          action: "getUserById",
+          action: "getValidCards",
           data: {
-            id: id
+            id: userId
           }
         }
       })
       .then(res => {
         if (res.result !== null) {
-          const { wallet } = res.result;
-          setWallet(wallet);
+          setWallet(res.result);
         }
       })
   }
 
-  const getCheckInStatus = () => {
+  const getCheckInStatus = (userId) => {
     Taro.cloud
       .callFunction({
         name: "checkin",
         data: {
           action: "getCheckInStatus",
           data: {
-            id: id
+            id: userId
           }
         }
       })
       .then(res => {
         if (res.result !== null) {
           const { isCheckedIn } = res.result;
-          setCheckInStatus(checkInStatus);
+          setCheckInStatus(isCheckedIn);
         }
       })
   }
 
   const checkIn = () => {
+    if (isCheckingIn) {
+      return;
+    }
+    
+    setIsCheckingIn(true);
     Taro.cloud
       .callFunction({
         name: "checkin",
@@ -109,26 +104,24 @@ function Index({ dispatch }) {
         }
       })
       .then(res => {
-        console.log(res);
         if (res.result !== null) {
-          getUserInfo(id);
+          getValidCards(id);
           setCheckInStatus(true);
           Taro.showToast({
             title: '打卡成功',
             icon: 'success',
             duration: 2000
           })
-        }else{
-          getUserInfo(id);
+        } else {
           Taro.showToast({
             title: '打卡失败',
             icon: 'error',
             duration: 2000
           })
         }
+        setIsCheckingIn(false);
       })
   }
-
 
   const revoke = () => {
     Taro.cloud
@@ -160,7 +153,7 @@ function Index({ dispatch }) {
           return (
             <View>
               <SwiperItem>
-                <View className='swiper' style={{ background: '#e8e8e8' }}>
+                <View className={`swiper ${item.type}`}>
                   <View className='cardType'>
                     {cardType[item.type]}
                   </View>
@@ -178,7 +171,7 @@ function Index({ dispatch }) {
 
       {
         checkInStatus ? (
-          <View className='checkIn checked' disabled>
+          <View className='checkIn checked'>
             已打卡
           </View>
         ) : (
