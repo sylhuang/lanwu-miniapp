@@ -31,7 +31,7 @@ exports.main = async (event, context) => {
     return [card, cardIndex];
   });
 
-  if (card && card.activation_date && card.card_type === CardTypes.Seasonal) {
+  if (card && !card.activation_date && card.card_type === CardTypes.Seasonal) {
     const year = new Date().getFullYear();
     const month = new Date().getMonth();
     const activation = new Date(year, month, 1);

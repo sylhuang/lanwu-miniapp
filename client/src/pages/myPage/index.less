@@ -1,9 +1,17 @@
 .main {
-    .profileImage {
+    .avatar-wrapper {
         width: 236rpx;
         height: 236rpx;
-        display: block;
-        margin: 40rpx auto 0;
+        padding: 0;
+        border-radius: 50%;
+        border: 1rpx solid rgba(0, 0, 0, 0.2);
+        &::after {
+            border: none;
+        }
+        .avatar {
+            height: 100%;
+            width: 100%;
+        }
     }
 
     .profileInfo {
@@ -15,9 +23,10 @@
     }
 
     .name {
-        font-size: 56px;
+        height: 78rpx;
+        font-size: 56rpx;
         font-weight: bold;
-        font-family: 'Alibaba Puhui';
+        text-align: center;
     }
 
     .id {
@@ -30,7 +39,7 @@
         width: 576rpx;
         height: 190rpx;
         margin: 40rpx auto 0;
-        border: solid 1px #BBB;
+        border: solid 1rpx #BBB;
         border-radius: 10rpx;
         display: flex;
         flex-direction: column;
@@ -51,7 +60,7 @@
     }
 
     .function {
-        width: 556px;
+        width: 556rpx;
         height: 98rpx;
         background: #98CEF5;
         border-radius: 10rpx;

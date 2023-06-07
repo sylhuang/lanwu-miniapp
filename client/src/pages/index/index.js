@@ -31,7 +31,7 @@ function Index({ dispatch }) {
         getCheckInStatus(res.data);
       },
     })
-  }, [])
+  }, []);
 
   const login = () => {
     Taro.cloud
