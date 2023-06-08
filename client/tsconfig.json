@@ -15,14 +15,16 @@
     "sourceMap": true,
     "baseUrl": ".",
     "rootDir": ".",
-    "jsx": "react",
-    "jsxFactory": "Taro.createElement",
+    "jsx": "react-jsx",
     "allowJs": true,
     "resolveJsonModule": true,
     "typeRoots": [
       "node_modules/@types"
     ]
   },
-  "include": ["./src", "./types"],
+  "include": [
+    "./src",
+    "./types"
+  ],
   "compileOnSave": false
 }

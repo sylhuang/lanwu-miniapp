@@ -9,7 +9,7 @@ function MyPage({ dispatch }) {
   const [avatar, setAvatar] = useState<string>("");
   const [balance, setBalance] = useState<number>(0);
   const [visits, setVisits] = useState<number>(0);
-  const defaultAvatar = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0';
+  const defaultAvatar = 'cloud://cloud1-3g5pvpzkaf71e717.636c-cloud1-3g5pvpzkaf71e717-1318124644/avatar.png';
 
   useDidShow(() => {
     Taro.getStorage({
