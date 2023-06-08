@@ -1,7 +1,8 @@
 import Taro, { useDidShow } from '@tarojs/taro'
-import { View, Image, Button, Input, CommonEventFunction } from '@tarojs/components'
+import { View, Image, Button, Input, CommonEventFunction, RootPortal, Form } from '@tarojs/components'
 import './index.less'
 import { useState } from 'react';
+import profileImage from '../../images/profileImage.png';
 
 function MyPage({ dispatch }) {
   const [name, setName] = useState<string>("");
@@ -9,7 +10,8 @@ function MyPage({ dispatch }) {
   const [avatar, setAvatar] = useState<string>("");
   const [balance, setBalance] = useState<number>(0);
   const [visits, setVisits] = useState<number>(0);
-  const defaultAvatar = 'cloud://cloud1-3g5pvpzkaf71e717.636c-cloud1-3g5pvpzkaf71e717-1318124644/avatar.png';
+  const [roles, setRoles] = useState<Array<string>>([]);
+  const [showNamePopup, setShowNamePopup] = useState<boolean>(false);
 
   useDidShow(() => {
     Taro.getStorage({
@@ -59,6 +61,7 @@ function MyPage({ dispatch }) {
           setBalance(result.balance);
           setVisits(result.visits);
           setAvatar(result.avatar);
+          setRoles(result.roles);
         }
       });
   };
@@ -103,13 +106,39 @@ function MyPage({ dispatch }) {
       })
   };
 
+  const handleSubmit: CommonEventFunction = (e) => {
+    updateUserInfo(id, e.detail.value);
+    setShowNamePopup(false);
+  }
+
+  const getNamePopup = () => {
+    return (
+      <RootPortal>
+        <View className='popup'>
+          <View className='form-container'>
+            <Form onSubmit={handleSubmit}>
+              <Input className="form-input" name="name" placeholder="请输入新昵称" maxlength={12} />
+              <View className="form-btns">
+                <Button formType='submit' type="primary" size="mini">保存</Button>
+                <Button size="mini" onClick={() => setShowNamePopup(false)}>取消</Button>
+              </View>
+            </Form>
+          </View>
+        </View>
+      </RootPortal>
+    );
+  }
+
   return (
     <View className='main'>
       <Button className="avatar-wrapper" open-type="chooseAvatar" onChooseAvatar={handleChooseAvatar}>
-        <Image className='avatar' src={avatar || defaultAvatar}></Image>
+        <Image className='avatar' src={avatar || profileImage}></Image>
       </Button>
       <View className='profileInfo'>
-        <Input name="name" type="nickname" className="name" placeholder="请输入昵称" maxlength={12} value={name} disabled />
+        <View className='name' onClick={() => setShowNamePopup(true)}>{name}</View>
+        {
+          showNamePopup && getNamePopup()
+        }
         <View className='id'>UID: {id}</View>
       </View>
       <View className='wallet'>
@@ -123,9 +152,13 @@ function MyPage({ dispatch }) {
         <View className='function'>
           出勤历史（暂待开发）
         </View>
-        <View className='function'>
-          其他
-        </View>
+        {
+          (roles.includes('admin') || roles.includes('superuser')) && (
+            <View className='function admin'>
+              管理员入口
+            </View>
+          )
+        }
       </View>
     </View>
   )

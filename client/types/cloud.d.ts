@@ -9,6 +9,7 @@ declare namespace CloudApi {
         avatar: string,
         balance: number,
         visits: number,
+        roles: Array<string>,
         wallet: Array<any>,
     }
     interface UpdateUserInfoResult {
