@@ -1,9 +1,8 @@
-// import { newsListService, loginService } from '@/services';
+import Taro, { Config } from '@tarojs/taro'
 
 export default {
   namespace: 'index',
   state: {
-
   },
   reducers: {
     update(state, { payload }) {
@@ -11,13 +10,20 @@ export default {
     },
   },
   effects: {
-    * getNewsList({ payload }, { call, put, select }) {
-        console.log(1);
-      // const res = yield call(newsListService.getList, {data: payload});
-      // if (res){
-      //   return res;
-      // }
-      // return false;
+    * login({ payload }, { call, put, select }) {
+      Taro.cloud
+        .callFunction({
+          name: "login",
+        })
+        .then(res => {
+          if (res.result !== null) {
+            const { id } = res.result;
+            Taro.setStorage({
+              key: "id",
+              data: res.result.id
+            });
+          }
+        })
     },
   },
 };

@@ -2,8 +2,9 @@ import Taro, { Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import './index.less'
 import { Swiper, SwiperItem } from '@tarojs/components'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Component } from 'react'
 import moment from 'moment';
+import { connect } from 'react-redux';
 
 const cardType = {
   guest: '散客',
@@ -34,19 +35,8 @@ function Index({ dispatch }) {
   }, []);
 
   const login = () => {
-    Taro.cloud
-      .callFunction({
-        name: "login",
-      })
-      .then(res => {
-        if (res.result !== null) {
-          const { id } = res.result;
-          Taro.setStorage({
-            key: "id",
-            data: res.result.id
-          });
-        }
-      })
+    console.log(2)
+    dispatch({ type: 'index/login' });
   }
 
   const getValidCards = (userId) => {
@@ -90,7 +80,7 @@ function Index({ dispatch }) {
     if (isCheckingIn) {
       return;
     }
-    
+
     setIsCheckingIn(true);
     Taro.cloud
       .callFunction({
@@ -189,4 +179,10 @@ Index.config = {
   usingComponent: {}
 }
 
-export default Index;
+function mapStateToProps({ index, loading }) {
+  return {
+  };
+}
+
+// export default Index;
+export default connect()(Index);

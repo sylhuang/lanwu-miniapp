@@ -1,16 +1,28 @@
-import { createLogger } from 'redux-logger'
+import { create } from 'dva-core';
+import createLoading from 'dva-loading';
+let app;
+let store;
+let dispatch;
 
-import models from '../models'
-import dvaCore from '../dvaCore'
+function createApp(opt) {
+  app = create(opt);
+  app.use(createLoading({}));
 
-const dva = dvaCore.createApp({
-  initialState: {},
-  models: models,
-  onAction: createLogger(),
-  onError(e, dispatch) {
-    console.log('error ===> ', e, dispatch)
-  },
-})
-const store = dva.getStore()
+  if (!global.registered) opt.models.forEach(model => app.model(model));
+  global.registered = true;
+  app.start();
 
-export default store
+  store = app._store;
+  app.getStore = () => store;
+
+  dispatch = store.dispatch;
+
+  app.dispatch = dispatch;
+  return app;
+}
+export default {
+  createApp,
+  getDispatch() {
+    return app.dispatch;
+  }
+}
