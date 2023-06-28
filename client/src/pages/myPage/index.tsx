@@ -5,12 +5,12 @@ import { useState } from 'react';
 import profileImage from '../../images/profileImage.png';
 
 function MyPage({ dispatch }) {
-  const [name, setName] = useState<string>("");
-  const [id, setId] = useState<string>("");
-  const [avatar, setAvatar] = useState<string>("");
-  const [balance, setBalance] = useState<number>(0);
-  const [visits, setVisits] = useState<number>(0);
-  const [roles, setRoles] = useState<Array<string>>([]);
+  const [name, setName] = useState<string>(Taro.getStorageSync("name") || "");
+  const [id, setId] = useState<string>(Taro.getStorageSync("id") || "");
+  const [avatar, setAvatar] = useState<string>(Taro.getStorageSync("avatar") || "");
+  const [balance, setBalance] = useState<number>(Taro.getStorageSync("balance") || 0);
+  const [visits, setVisits] = useState<number>(Taro.getStorageSync("visits") || 0);
+  const [roles, setRoles] = useState<Array<string>>(Taro.getStorageSync("roles") || []);
   const [showNamePopup, setShowNamePopup] = useState<boolean>(false);
 
   useDidShow(() => {
@@ -62,6 +62,30 @@ function MyPage({ dispatch }) {
           setVisits(result.visits);
           setAvatar(result.avatar);
           setRoles(result.roles);
+          Taro.setStorage({
+            key:"id",
+            data:result.id
+          });
+          Taro.setStorage({
+            key:"name",
+            data:result.name
+          });
+          Taro.setStorage({
+            key:"balance",
+            data:result.balance
+          });
+          Taro.setStorage({
+            key:"visits",
+            data:result.visits
+          });
+          Taro.setStorage({
+            key:"avatar",
+            data:result.avatar
+          });
+          Taro.setStorage({
+            key:"roles",
+            data:result.roles
+          });
         }
       });
   };
