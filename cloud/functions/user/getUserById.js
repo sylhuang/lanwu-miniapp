@@ -26,6 +26,7 @@ exports.main = async (event, context) => {
     .then(res => ({
       id: res.data._id,
       name: res.data.name,
+      avatar: res.data.avatar,
       alias: res.data.alias,
       roles: res.data.roles,
       balance: res.data.balance,

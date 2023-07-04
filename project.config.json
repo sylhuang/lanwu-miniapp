@@ -3,14 +3,32 @@
   "cloudfunctionRoot": "cloud/functions/",
   "projectname": "lanwu-miniapp",
   "description": "MiniApp for Lan Wu Board Game Club",
-  "appid": "touristappid",
+  "appid": "wx648ed5f00e30b4a2",
   "setting": {
     "urlCheck": true,
-    "es6": false,
-    "enhance": false,
+    "es6": true,
+    "enhance": true,
     "compileHotReLoad": false,
     "postcss": false,
-    "minified": false
+    "minified": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "condition": false,
+    "ignoreUploadUnusedFiles": true
   },
-  "compileType": "miniprogram"
+  "compileType": "miniprogram",
+  "libVersion": "2.32.1",
+  "srcMiniprogramRoot": "client/dist/",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
 }

@@ -18,7 +18,7 @@ exports.main = async (event, context) => {
     return null;
   }
 
-  const userInfoKeys = Object.freeze(["balance", "name"]);
+  const userInfoKeys = Object.freeze(["balance", "name", "alias", "avatar"]);
   const userInfo = {};
 
   userInfoKeys.forEach(key => {
@@ -36,10 +36,14 @@ exports.main = async (event, context) => {
     return await db.collection('Users').doc(id).field({
       name: true,
       balance: true,
+      alias: true,
+      avatar: true,
     }).get().then(res => ({
       id,
       name: res.data.name,
       balance: res.data.balance,
+      alias: res.data.alias,
+      avatar: res.data.avatar,
     }));
   }
 

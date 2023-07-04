@@ -1,6 +1,5 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk');
-const getCheckInStatus = require('./getCheckInStatus');
 
 // 初始化 cloud
 cloud.init({
@@ -18,26 +17,6 @@ exports.main = async (event, context) => {
   } = event.data;
 
   if (!id || !cardId) {
-    return null;
-  }
-
-  const status = await getCheckInStatus.main(event, context);
-
-  if (!status || status.isCheckedIn) {
-    return null;
-  }
-
-  const { result: validCards } = await cloud.callFunction({
-    name: 'card',
-    data: {
-      action: 'getValidCards',
-      data: {
-        id,
-      }
-    }
-  });
-
-  if (!validCards.find(validCard => validCard.id === cardId)) {
     return null;
   }
 

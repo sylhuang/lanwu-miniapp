@@ -16,49 +16,41 @@ exports.main = async (event, context) => {
 
   // Get the user if exists
   let [user] = await db.collection('Users').where({
-    _openid: OPENID
-  })
+      _openid: OPENID
+    })
     .get()
     .then(res => res.data);
 
-  if (!user) {
-    const { total } = await db.collection('Users').count();
-    const id = total.toString().padStart(6, '0');
-    await db.collection('Users').add({
-      data: {
-        _id: id,
-        _openid: OPENID,
-        name: `meeple${id}`,
-        alias: null,
-        roles: ['user'],
-        balance: 0,
-        wallet: [{
-          card_id: Date.now().toString(),
-          card_type: 'guest',
-          activation_date: new Date(),
-          expiration_date: null,
-          balance: null,
-        }]
-      }
+  if (user) {
+    return ({
+      id: user._id
     });
-
-    user = await db.collection('Users').doc(id)
-      .get()
-      .then(res => res.data);
   }
 
-  return user ? ({
-    id: user._id,
-    name: user.name,
-    alias: user.alias,
-    roles: user.roles,
-    balance: user.balance,
-    wallet: user.wallet.map(card => ({
-      id: card.card_id,
-      type: card.card_type,
-      activation: card.activation_date,
-      expiration: card.expiration_date,
-      balance: card.balance,
-    }))
-  }) : null;
+  const {
+    total
+  } = await db.collection('Users').count();
+  const id = total.toString().padStart(6, '0');
+  await db.collection('Users').add({
+    data: {
+      _id: id,
+      _openid: OPENID,
+      name: `meeple${id}`,
+      avatar: null,
+      alias: null,
+      roles: ['user'],
+      balance: 0,
+      wallet: [{
+        card_id: Date.now().toString(),
+        card_type: 'guest',
+        activation_date: new Date(),
+        expiration_date: null,
+        balance: null,
+      }]
+    }
+  });
+
+  return ({
+    id
+  });
 }

@@ -1,0 +1,115 @@
+.main {
+    .avatar-wrapper {
+        width: 236rpx;
+        height: 236rpx;
+        padding: 0;
+        border-radius: 50%;
+        border: 1rpx solid rgba(0, 0, 0, 0.2);
+        &::after {
+            border: none;
+        }
+        .avatar {
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    .profileInfo {
+        margin-top: 40rpx;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .name {
+        font-size: 56rpx;
+        font-family: 'Alibaba Puhui';
+        font-weight: bold;
+    }
+
+    .id {
+        font-size: 32rpx;
+        margin-top: 10rpx;
+        font-family: 'Alibaba Puhui';
+    }
+
+    .wallet {
+        width: 576rpx;
+        height: 190rpx;
+        margin: 40rpx auto 0;
+        border: solid 1rpx #BBB;
+        border-radius: 10rpx;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .walletInfo {
+        font-family: 'Alibaba Puhui';
+        font-size: 32px;
+        font-weight: bold;
+        margin-left: 40rpx;
+        line-height: 60rpx;
+    }
+
+    .functions {
+        margin: 50rpx auto 0;
+        width: 576rpx;
+    }
+
+    .function {
+        width: 556rpx;
+        height: 98rpx;
+        background: #98CEF5;
+        border-radius: 10rpx;
+        display: flex;
+        align-items: center;
+        padding-left: 20rpx;
+        margin: 30rpx 0;
+        font-size: 40rpx;
+        font-weight: bold;
+        color: #3F3C3C;
+        font-family: 'Alibaba Puhui';
+
+        &.admin {
+            background: #e2bc00;
+        }
+    }
+}
+
+.popup {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+
+    .form-container {
+        width: 500rpx;
+        padding: 60rpx 60rpx 40rpx 60rpx;
+        background-color: white;
+        border: 1rpx solid rgba(0, 0, 0, 0.2);
+        border-radius: 10rpx;
+
+        .form-input {
+            height: 60rpx;
+            font-size: 42rpx;
+        }
+
+        .form-btns {
+            display: flex;
+            justify-content: flex-end;
+            gap: 40rpx;
+            margin-top: 60rpx;
+
+            button {
+                margin: 0;
+            }
+        }
+    }
+}

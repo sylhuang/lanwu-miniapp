@@ -1,5 +1,6 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk');
+const { CardTypes } = require('./cardTypes');
 
 // 初始化 cloud
 cloud.init({
@@ -45,5 +46,21 @@ exports.main = async (event, context) => {
     activation: card.activation_date,
     expiration: card.expiration_date,
     balance: card.balance,
-  }));
+  })).sort((a, b) => {
+    const getOrder = (c) => {
+      switch (c.type) {
+        case CardTypes.Annual:
+          return 0;
+        case CardTypes.Seasonal:
+          return 1;
+        case CardTypes.Times:
+          return 2;
+        case CardTypes.Guest:
+        default:
+          return 3;
+      }
+    }
+    
+    return getOrder(a) - getOrder(b);
+  });
 }

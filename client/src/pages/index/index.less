@@ -1,0 +1,69 @@
+.main{
+    .swipers {
+        width: 100%;
+        height: 412rpx;
+    }
+
+    .swiper {
+        width: 100%;
+        height: 100%;
+        &.annual {
+            background-color: #2b2b2b;
+            color: white;
+        }
+        &.seasonal {
+            background-color: #e2bc00;
+            color: white;
+        }
+        &.times {
+            background-color: #98CEF5;
+            color: black;
+        }
+        &.guest {
+            background-color: #e8e8e8;
+            color: black;
+        }
+    }
+
+    .cardType {
+        font-size: 56rpx;
+        padding: 40rpx 0 0 48rpx;
+        font-family: 'Alibaba Puhui';
+    }
+
+    .cardInfo {
+        font-size: 32rpx;
+        padding: 100rpx 0 0 48rpx;
+        font-family: 'Alibaba Puhui';
+    }
+
+    .checkIn {
+        width: 400rpx;
+        height: 400rpx;
+        margin: 200rpx auto 0;
+        font-size: 96rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #eaeaea;
+        font-weight: 800;
+        font-family: 'Alibaba Puhui';
+        border-radius: 50%;
+        box-shadow: inset 0 0 20rpx 10rpx rgba(0, 0, 0, .3), 0 5rpx 20rpx rgba(0, 0, 0, .3);
+        transition: all .1s linear;
+        transition-property: translate box-shadow;
+        &.checked {
+            background-color: #920d0d;
+            border: 60rpx solid #e94f4f;
+        }
+        &.unchecked {
+            background-color: #0D4C92;
+            border: 60rpx solid #4fa6e9;
+        }
+        &.unchecked:active {
+            border-color: #98CEF5;
+            box-shadow: inset 0 0 20rpx 10rpx rgba(0, 0, 0, .3);
+            transform: translateY(5rpx);
+        }
+    }
+}
